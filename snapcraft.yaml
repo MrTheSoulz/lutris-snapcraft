@@ -90,10 +90,10 @@ plugs:
     target: $SNAP/gnome-platform
     default-provider: gnome-3-28-1804
   
-  gtk-3-themes:
-    interface: content
-    target: $SNAP/data-dir/themes
-    default-provider: gtk-common-themes
+  #gtk-3-themes:
+  #  interface: content
+  #  target: $SNAP/data-dir/themes
+  #  default-provider: gtk-common-themes
 
   #icon-themes:
   #  interface: content
