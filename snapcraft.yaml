@@ -23,7 +23,7 @@ parts:
     python-version: python3
     source: https://github.com/lutris/lutris.git
     build-packages: [python3-all-dev, python3-cairo-dev, libgirepository1.0-dev]
-    stage-packages: [python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, curl, libc6-i386, lib32gcc1]
+    stage-packages: [libxrandr-dev, python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, curl, libc6-i386, lib32gcc1]
     override-build: |
       snapcraftctl build
       sed -i 's|Name=Lutris|Name=Lutris-MTS|' ${SNAPCRAFT_PART_INSTALL}/share/applications/net.lutris.Lutris.desktop
@@ -90,6 +90,7 @@ plugs:
     target: $SNAP/gnome-platform
     default-provider: gnome-3-28-1804
   
+  #causing erros about it becomming read only
   #gtk-3-themes:
   #  interface: content
   #  target: $SNAP/data-dir/themes
@@ -100,19 +101,19 @@ plugs:
   #  target: $SNAP/data-dir/icons
   #  default-provider: gtk-common-themes
 
-slots:
+#slots:
 
-  lutris:
-    interface: dbus
-    bus: session
-    name: net.lutris.Lutris
+  #lutris:
+  #  interface: dbus
+  #  bus: session
+  #  name: net.lutris.Lutris
 
 apps:
 
   lutris:
     command: bin/desktop-launch $SNAP/bin/lutris -d
     plugs: [home, daemon-notify, network, network-bind, network-manager, desktop, desktop-legacy, unity7, wayland, opengl, pulseaudio, gsettings, x11, screen-inhibit-control, kvm, libvirt, removable-media, joystick, io-ports-control, dbus, hardware-observe, mount-observe]
-    slots: [lutris]
+    #slots: [lutris] temp disabled beacvuse it causes snapcraft to require a manual review...
     desktop: share/applications/net.lutris.Lutris.desktop
   
   lutris-wrapper:
