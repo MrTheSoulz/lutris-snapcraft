@@ -81,13 +81,13 @@ parts:
     override-build: |
       snapcraftctl build
       sed -i 's|Name=Lutris|Name=Lutris-MTS|' ${SNAPCRAFT_PART_INSTALL}/share/applications/net.lutris.Lutris.desktop
-    stage-packages: ['python3', 'python3-yaml', 'python3-setuptools', 'python3-requests', 'python3-pil', 'python3-gi', 'dh-python', 'gir1.2-gtk-3.0', 'gir1.2-glib-2.0', 'gir1.2-gnomedesktop-3.0', 'gir1.2-webkit2-4.0', gir1.2-notify-0.7, libgirepository1.0-dev, libc-bin]
+    stage-packages: ['python3-all-dev', 'gir1.2-gtk-3.0', 'gir1.2-glib-2.0', 'gir1.2-gnomedesktop-3.0', 'gir1.2-webkit2-4.0', gir1.2-notify-0.7, libgirepository1.0-dev, libc-bin]
     after: [enable-i386]
 
   lutris-runtime:
     plugin: nil
-    stage-packages: [curl, cabextract, psmisc, gvfs-backends, unzip, p7zip, mesa-utils, fluid-soundfont-gs, libgnutls30, x11-xserver-utils, on amd64: ['libxrandr-dev:i386', 'libgnutls30:i386', 'x11-xserver-utils:i386', 'libc6-i386', 'lib32gcc1'] ]
-    stage: [-lib/ld-linux.so.2]
+    stage-packages: [python3, python3-yaml, python3-requests, python3-pil, python3-gi, dh-python, curl, cabextract, psmisc, gvfs-backends, unzip, p7zip, mesa-utils, fluid-soundfont-gs, libgnutls30, x11-xserver-utils, on amd64: ['libxrandr-dev:i386', 'libgnutls30:i386', 'x11-xserver-utils:i386', 'libc6-i386', 'lib32gcc1'] ]
+    stage: [-lib/ld-linux.so.2, -usr/bin/cpp-7, -usr/share/doc/cpp/README.Debian, -usr/share/man/man1/cpp-7.1.gz]
     after: [enable-i386]
 
 plugs:
@@ -101,7 +101,7 @@ apps:
 
   lutris:
     command: bin/desktop-launch $SNAP/bin/lutris -d
-    plugs: [home, daemon-notify, network, network-bind, network-manager, desktop, desktop-legacy, unity7, wayland, opengl, pulseaudio, gsettings, x11, screen-inhibit-control, kvm, libvirt, removable-media, joystick, io-ports-control, dbus, hardware-observe, mount-observe]
+    plugs: [home, daemon-notify, network, network-bind, network-manager, desktop, desktop-legacy, unity7, wayland, opengl, pulseaudio, gsettings, x11, screen-inhibit-control, kvm, libvirt, removable-media, joystick, io-ports-control, hardware-observe, mount-observe]
     desktop: share/applications/net.lutris.Lutris.desktop
   
   lutris-wrapper:
