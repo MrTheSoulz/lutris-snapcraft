@@ -18,8 +18,12 @@ parts:
     plugin: python
     python-version: python3
     source: https://github.com/lutris/lutris.git
-    build-packages: [python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, psmisc, cabextract, unzip, p7zip, curl, fluid-soundfont-gs, x11-xserver-utils, python3-evdev, libc6-i386, lib32gcc1, libgirepository1.0-dev]
-    stage-packages: [python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, psmisc, cabextract, unzip, p7zip, curl, fluid-soundfont-gs, x11-xserver-utils, python3-evdev, libc6-i386, lib32gcc1, libgirepository1.0-dev] # Clean these before release
+    build-packages: [python3-all-dev, python3-cairo-dev, libgirepository1.0-dev]
+    stage-packages: [python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, curl, libc6-i386, lib32gcc1]
+    stage-snaps: [wine-platform] # this is freaking huge, it has all 3 stable, devel and staging
+    override-build: |
+      snapcraftctl build
+      sed -i 's|Name=Lutris|Name=Lutris-MTS|' ${SNAPCRAFT_PART_INSTALL}/share/applications/net.lutris.Lutris.desktop
     after: [desktop-gnome-platform]
 
   desktop-gnome-platform:
@@ -39,7 +43,7 @@ plugs:
     target: $SNAP/gnome-platform
     default-provider: gnome-3-28-1804
 
-  dbus-lutris-mts:
+  lutris:
     interface: dbus
     bus: session
     name: net.lutris.Lutris
@@ -50,3 +54,6 @@ apps:
     command: bin/desktop-launch $SNAP/bin/lutris -d
     plugs: [home, daemon-notify, network, network-bind, network-manager, desktop, desktop-legacy, unity7, wayland, opengl, pulseaudio, gsettings, x11, screen-inhibit-control, kvm, libvirt, removable-media, joystick, io-ports-control, dbus, hardware-observe, mount-observe]
     desktop: share/applications/net.lutris.Lutris.desktop
+
+
+    #stage-packages: [python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, psmisc, cabextract, unzip, p7zip, curl, fluid-soundfont-gs, x11-xserver-utils, python3-evdev, libc6-i386, lib32gcc1, libgirepository1.0-dev] # Clean these before release
