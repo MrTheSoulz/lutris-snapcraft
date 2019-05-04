@@ -5,8 +5,8 @@ base: core18
 grade: stable
 
 architectures:
-  - build-on: [amd64]
-    run-on: [amd64]
+  - build-on: [amd64, i386]
+    run-on: [amd64, i386]
 
 summary: lutris snap
 description: |
@@ -18,16 +18,14 @@ description: |
 
 parts:
 
-  lutris:
-    plugin: python
-    python-version: python3
-    source: https://github.com/lutris/lutris.git
-    build-packages: [python3-all-dev, python3-cairo-dev, libgirepository1.0-dev]
-    stage-packages: [libxrandr-dev, python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, curl, libc6-i386, lib32gcc1]
+  enable-i386:
+    plugin: nil
     override-build: |
       snapcraftctl build
-      sed -i 's|Name=Lutris|Name=Lutris-MTS|' ${SNAPCRAFT_PART_INSTALL}/share/applications/net.lutris.Lutris.desktop
-    after: [desktop-gnome-platform]
+      if [ "$SNAPCRAFT_ARCH_TRIPLET" = "x86_64-linux-gnu" ]; then
+        dpkg --add-architecture i386
+        apt update
+      fi
 
   desktop-gnome-platform:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
@@ -38,15 +36,8 @@ parts:
     override-build: |
       snapcraftctl build
       mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
-  
-  enable-i386:
-    plugin: nil
-    override-build: |
-      snapcraftctl build
-      if [ "$SNAPCRAFT_ARCH_TRIPLET" = "x86_64-linux-gnu" ]; then
-        dpkg --add-architecture i386
-        apt update
-      fi
+    after: [enable-i386]
+
   wine:
     plugin: nil
     build-packages: [dpkg, wget]
@@ -81,6 +72,16 @@ parts:
     plugin: nil
     stage-packages: [libasound2, libasound2-plugins, libglib2.0-0, libgphoto2-6, gstreamer1.0-plugins-base, libgstreamer-plugins-base1.0-0, liblcms2-2, libldap-2.4-2, libmpg123-0, libncurses5, libopenal1, libpcap0.8, libpulse0, libudev1, libxext6, libxml2, zlib1g, libcups2, libdbus-1-3, libfontconfig1, libfreetype6, libgif7, libglu1-mesa, libgnutls30, libgpg-error0, libgsm1, libgssapi-krb5-2, libjpeg8, libodbc1, libosmesa6, libpng16-16, libsane, libsdl2-2.0-0, libsqlite3-0, libtiff5, libva2, libv4l-0, libvulkan1, libxcomposite1, libxcursor1, libxfixes3, libxi6, libxinerama1, libxrandr2, libxrender1, libxslt1.1, libxxf86vm1, locales-all, va-driver-all, samba-libs, winbind, adwaita-icon-theme, dmz-cursor-theme, gnome-themes-standard, ibus-gtk3, libappindicator3-1, libgdk-pixbuf2.0-0, libgtk-3-0, libgtk-3-bin, libibus-1.0-5, libxkbcommon0, light-themes, shared-mime-info, ttf-ubuntu-font-family, unity-gtk3-module, xdg-user-dirs, on amd64: ['libasound2:i386', 'libasound2-plugins:i386', 'libc6:i386', 'libglib2.0-0:i386', 'libgphoto2-6:i386', 'gstreamer1.0-plugins-base:i386', 'libgstreamer-plugins-base1.0-0:i386', 'liblcms2-2:i386', 'libldap-2.4-2:i386', 'libmpg123-0:i386', 'libncurses5:i386', 'libopenal1:i386', 'libpcap0.8:i386', 'libpulse0:i386', 'libudev1:i386', 'libxext6:i386', 'libxml2:i386', 'zlib1g:i386', 'libcups2:i386', 'libdbus-1-3:i386', 'libfontconfig1:i386', 'libfreetype6:i386', 'libgif7:i386', 'libglu1-mesa:i386', 'libgnutls30:i386', 'libgpg-error0:i386', 'libgsm1:i386', 'libgssapi-krb5-2:i386', 'libjpeg8:i386', 'libodbc1:i386', 'libosmesa6:i386', 'libpng16-16:i386', 'libsane:i386', 'libsdl2-2.0-0:i386', 'libsqlite3-0:i386', 'libtiff5:i386', 'libv4l-0:i386', 'libva2:i386', 'libvulkan1:i386', 'libxcomposite1:i386', 'libxcursor1:i386', 'libxfixes3:i386', 'libxi6:i386', 'libxinerama1:i386', 'libxrandr2:i386', 'libxrender1:i386', 'libxslt1.1:i386', 'libxxf86vm1:i386', 'va-driver-all:i386', 'samba-libs:i386', 'winbind:i386', 'ibus-gtk3:i386', 'libappindicator3-1:i386', 'libgdk-pixbuf2.0-0:i386', 'libgtk-3-0:i386', 'libgtk-3-bin:i386', 'libibus-1.0-5:i386', 'libxkbcommon0:i386', 'unity-gtk3-module:i386']]
     stage: [-etc/init, -etc/init.d, -etc/logrotate.d, -usr/share/apps, -usr/share/applications, -usr/share/bug, -usr/share/doc, -usr/share/doc-base, -usr/share/debhelper, -usr/share/lintian, -usr/share/man, -usr/share/pixmaps, -usr/share/pkgconfig, -lib/ld-linux.so.2]
+    after: [enable-i386]
+  
+  lutris:
+    plugin: python
+    python-version: python3
+    source: https://github.com/lutris/lutris.git
+    override-build: |
+      snapcraftctl build
+      sed -i 's|Name=Lutris|Name=Lutris-MTS|' ${SNAPCRAFT_PART_INSTALL}/share/applications/net.lutris.Lutris.desktop
+    stage-packages: [samba-libs, libxrandr-dev, python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, curl, libc6-i386, lib32gcc1, on amd64: ['libxrandr-dev:i386'] ]
     after: [enable-i386]
 
 plugs:
