@@ -95,10 +95,10 @@ plugs:
     target: $SNAP/data-dir/themes
     default-provider: gtk-common-themes
 
-  icon-themes:
-    interface: content
-    target: $SNAP/data-dir/icons
-    default-provider: gtk-common-themes
+  #icon-themes:
+  #  interface: content
+  #  target: $SNAP/data-dir/icons
+  #  default-provider: gtk-common-themes
 
 slots:
 
