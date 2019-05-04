@@ -107,7 +107,7 @@ apps:
   lutris-wrapper:
     command: bin/desktop-launch $SNAP/bin/lutris-wrapper
 
-  wine64:
+  wine:
     command: bin/desktop-launch $SNAP/bin/wine
   
   wine64:
