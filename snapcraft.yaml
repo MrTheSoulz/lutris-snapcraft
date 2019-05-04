@@ -86,7 +86,8 @@ parts:
 
   lutris-runtime:
     plugin: nil
-    stage-packages: [samba-libs, gir1.2-gtk-3.0, curl, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, on amd64: ['libxrandr-dev:i386'] ]
+    stage-packages: [samba-libs, gir1.2-gtk-3.0, curl, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, libgnutls30, on amd64: ['libxrandr-dev:i386', 'libgnutls30:i386'] ]
+    stage: [-lib/ld-linux.so.2]
     after: [enable-i386]
 
 plugs:
@@ -95,31 +96,12 @@ plugs:
     interface: content
     target: $SNAP/gnome-platform
     default-provider: gnome-3-28-1804
-  
-  #causing erros about it becomming read only
-  #gtk-3-themes:
-  #  interface: content
-  #  target: $SNAP/data-dir/themes
-  #  default-provider: gtk-common-themes
-
-  #icon-themes:
-  #  interface: content
-  #  target: $SNAP/data-dir/icons
-  #  default-provider: gtk-common-themes
-
-#slots:
-
-  #lutris:
-  #  interface: dbus
-  #  bus: session
-  #  name: net.lutris.Lutris
 
 apps:
 
   lutris:
     command: bin/desktop-launch $SNAP/bin/lutris -d
     plugs: [home, daemon-notify, network, network-bind, network-manager, desktop, desktop-legacy, unity7, wayland, opengl, pulseaudio, gsettings, x11, screen-inhibit-control, kvm, libvirt, removable-media, joystick, io-ports-control, dbus, hardware-observe, mount-observe]
-    #slots: [lutris] #temp disabled beacvuse it causes snapcraft to require a manual review...
     desktop: share/applications/net.lutris.Lutris.desktop
   
   lutris-wrapper:
