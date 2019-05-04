@@ -116,10 +116,13 @@ apps:
     desktop: share/applications/net.lutris.Lutris.desktop
   
   lutris-wrapper:
-    command: bin/desktop-launch bin/lutris-wrapper
+    command: bin/desktop-launch $SNAP/bin/lutris-wrapper
+
+  wine64:
+    command: bin/desktop-launch $SNAP/bin/wine
   
   wine64:
-    command: bin/desktop-launch usr/local/bin/wine64
+    command: bin/desktop-launch $SNAP/bin/wine64
   
   winecfg:
-    command: bin/desktop-launch usr/local/bin/winecfg
+    command: bin/desktop-launch $SNAP/bin/winecfg
