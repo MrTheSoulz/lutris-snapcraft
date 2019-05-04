@@ -43,5 +43,5 @@ apps:
 
   lutris:
     command: bin/desktop-launch $SNAP/bin/lutris -d
-    plugs: [home, network, desktop, desktop-legacy, unity7, wayland, opengl, pulseaudio, gsettings, x11, screen-inhibit-control, kvm, libvirt, removable-media, joystick, io-ports-control]
+    plugs: [home, network, desktop, desktop-legacy, unity7, wayland, opengl, pulseaudio, gsettings, x11, screen-inhibit-control, kvm, libvirt, removable-media, joystick, io-ports-control, dbus]
     #desktop: canary/share/applications/citra.desktop
