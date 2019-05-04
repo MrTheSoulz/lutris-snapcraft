@@ -1,6 +1,6 @@
 name: lutris-mts
 version: git
-confinement: strict
+confinement: devmode
 base: core18
 grade: stable
 
@@ -38,6 +38,11 @@ plugs:
     interface: content
     target: $SNAP/gnome-platform
     default-provider: gnome-3-28-1804
+
+  dbus-lutris-mts:
+    interface: dbus
+    bus: session
+    name: net.lutris.Lutris
 
 apps:
 
