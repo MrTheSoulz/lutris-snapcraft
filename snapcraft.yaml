@@ -1,6 +1,6 @@
 name: lutris-mts
 version: git
-confinement: devmode #chaning to strict causes errors trying to read nvidia version file, need to figure it out
+confinement: devmode # chaning to strict causes errors trying to read nvidia version file, need to figure it out
 base: core18
 grade: stable
 
