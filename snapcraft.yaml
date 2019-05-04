@@ -1,0 +1,47 @@
+name: lutris-mts
+version: git
+confinement: strict
+base: core18
+grade: stable
+
+architectures:
+  - build-on: [amd64]
+    run-on: [amd64]
+
+summary: lutris snap
+description: |
+  TEST.
+
+parts:
+
+  lutis:
+    plugin: python
+    python-version: python3
+    source: https://github.com/lutris/lutris.git
+    build-packages: [python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, psmisc, cabextract, unzip, p7zip, curl, fluid-soundfont-gs, x11-xserver-utils, python3-evdev, libc6-i386, lib32gcc1, libgirepository1.0-dev]
+    stage-packages: [python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, psmisc, cabextract, unzip, p7zip, curl, fluid-soundfont-gs, x11-xserver-utils, python3-evdev, libc6-i386, lib32gcc1, libgirepository1.0-dev] # Clean these before release
+    after: [desktop-gnome-platform]
+
+  desktop-gnome-platform:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-depth: 1
+    source-subdir: gtk
+    plugin: make
+    build-packages: [build-essential, libgtk-3-dev]
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
+
+plugs:
+
+  gnome-3-28-1804:
+    interface: content
+    target: $SNAP/gnome-platform
+    default-provider: gnome-3-28-1804
+
+apps:
+
+  lutris:
+    command: bin/desktop-launch $SNAP/bin/lutris -d
+    plugs: [home, network, desktop, desktop-legacy, unity7, wayland, opengl, pulseaudio, gsettings, x11, screen-inhibit-control, kvm, libvirt, removable-media, joystick, io-ports-control]
+    #desktop: canary/share/applications/citra.desktop
