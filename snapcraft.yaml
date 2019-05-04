@@ -81,7 +81,12 @@ parts:
     override-build: |
       snapcraftctl build
       sed -i 's|Name=Lutris|Name=Lutris-MTS|' ${SNAPCRAFT_PART_INSTALL}/share/applications/net.lutris.Lutris.desktop
-    stage-packages: [samba-libs, libxrandr-dev, python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, curl, libc6-i386, lib32gcc1, on amd64: ['libxrandr-dev:i386'] ]
+    stage-packages: [libxrandr-dev, python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, libc6-i386, lib32gcc1]
+    after: [enable-i386]
+
+  lutris-runtime:
+    plugin: nil
+    stage-packages: [samba-libs, gir1.2-gtk-3.0, curl, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, on amd64: ['libxrandr-dev:i386'] ]
     after: [enable-i386]
 
 plugs:
