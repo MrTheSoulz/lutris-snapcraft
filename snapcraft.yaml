@@ -1,6 +1,6 @@
 name: lutris-mts
 version: git
-confinement: strict
+confinement: devmode #chaning to strict causes errors trying to read nvidia version file, need to figure it out
 base: core18
 grade: stable
 
@@ -35,7 +35,7 @@ parts:
     build-packages: [gcc-multilib, g++-multilib]
     stage-packages: [gcc-multilib, g++-multilib] #is it needed?? try...
     override-build: |
-      $SNAPCRAFT_PART_SRC/configure --enable-win64 --without-freetype
+      $SNAPCRAFT_PART_SRC/configure
       snapcraftctl build
 
   desktop-gnome-platform:
@@ -83,5 +83,8 @@ apps:
   lutris-wrapper:
     command: bin/desktop-launch bin/lutris-wrapper
   
-  wine:
-    command: bin/desktop-launch bin/wine
+  wine64:
+    command: bin/desktop-launch usr/local/bin/wine64
+  
+  winecfg:
+    command: bin/desktop-launch usr/local/bin/winecfg
