@@ -81,7 +81,7 @@ parts:
     override-build: |
       snapcraftctl build
       sed -i 's|Name=Lutris|Name=Lutris-MTS|' ${SNAPCRAFT_PART_INSTALL}/share/applications/net.lutris.Lutris.desktop
-    stage-packages: [libxrandr-dev, python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, libc6-i386, on amd64: [lib32gcc1]
+    stage-packages: [libxrandr-dev, python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, libc6-i386, on amd64: [lib32gcc1]]
     after: [enable-i386]
 
   lutris-runtime:
