@@ -4,9 +4,7 @@ confinement: devmode #chaning to strict causes errors trying to read nvidia vers
 base: core18
 grade: stable
 
-architectures:
-  - build-on: [amd64, i386]
-    run-on: [amd64, i386]
+architectures: [amd64, i386]
 
 summary: lutris snap
 description: |
