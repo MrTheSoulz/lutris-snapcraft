@@ -20,18 +20,26 @@ parts:
     source: https://github.com/lutris/lutris.git
     build-packages: [python3-all-dev, python3-cairo-dev, libgirepository1.0-dev]
     stage-packages: [python3-all-dev, python3-cairo-dev, libgirepository1.0-dev,python3-pip, python3-cairo, python3-yaml, python3-requests, python3-pil, python3-gi, gir1.2-gtk-3.0, gir1.2-gnomedesktop-3.0, gir1.2-webkit2-4.0, gir1.2-notify-0.7, curl, libc6-i386, lib32gcc1]
-    stage-snaps: [wine-platform] # this is freaking huge, it has all 3 stable, devel and staging
     override-build: |
       snapcraftctl build
       sed -i 's|Name=Lutris|Name=Lutris-MTS|' ${SNAPCRAFT_PART_INSTALL}/share/applications/net.lutris.Lutris.desktop
-    after: [desktop-gnome-platform]
+    after: [desktop-gnome-platform, wine]
+
+  wine:
+    plugin: make
+    source: git://source.winehq.org/git/wine.git
+    build-packages: [gcc-multilib, g++-multilib]
+    stage-packages: [gcc-multilib, g++-multilib] #is it needed?? try...
+    override-build: |
+      $SNAPCRAFT_PART_SRC/configure --enable-win64 --without-freetype
+      snapcraftctl build
 
   desktop-gnome-platform:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-depth: 1
     source-subdir: gtk
     plugin: make
-    build-packages: [build-essential, libgtk-3-dev]
+    build-packages: [build-essential, libgtk-3-dev, flex, bison]
     override-build: |
       snapcraftctl build
       mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
