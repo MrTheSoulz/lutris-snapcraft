@@ -44,8 +44,9 @@ parts:
     source-subdir: gtk
     plugin: make
     build-packages: [build-essential, libgtk-3-dev, flex, bison]
+    #we probably need wine 32bit
     override-build: |
-      snapcraftctl build
+      snapcraftctl build --enable-win64 --without-freetype
       mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
 
 plugs:
