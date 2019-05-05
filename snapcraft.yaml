@@ -97,11 +97,20 @@ plugs:
     target: $SNAP/gnome-platform
     default-provider: gnome-3-28-1804
 
+
+slots:
+
+  lutris:
+    interface: dbus
+    bus: session
+    name: net.lutris.Lutris
+
 apps:
 
   lutris:
     command: bin/desktop-launch $SNAP/bin/lutris -d
     plugs: [home, daemon-notify, network, network-bind, network-manager, desktop, desktop-legacy, unity7, wayland, opengl, pulseaudio, gsettings, x11, screen-inhibit-control, kvm, libvirt, removable-media, joystick, io-ports-control, hardware-observe, mount-observe]
+    slots: [ lutris ]
     desktop: share/applications/net.lutris.Lutris.desktop
   
   lutris-wrapper:
